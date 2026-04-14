@@ -1,0 +1,76 @@
+{
+  "sections": {
+    "hero": {
+      "type": "hero",
+      "settings": {
+        "heading": "Find Clothes That Matches Your Style",
+        "subheading": "Browse through our diverse range of meticulously crafted garments, designed to bring out your individuality and cater to your sense of style.",
+        "cta_text": "Shop Now",
+        "cta_url": "/collections/all",
+        "secondary_cta_text": "",
+        "secondary_cta_url": ""
+      },
+      "blocks": {
+        "stat-1": { "type": "stat", "settings": { "number": "200+", "label": "International Brands" } },
+        "stat-2": { "type": "stat", "settings": { "number": "2,000+", "label": "High-Quality Products" } },
+        "stat-3": { "type": "stat", "settings": { "number": "30,000+", "label": "Happy Customers" } }
+      },
+      "block_order": ["stat-1", "stat-2", "stat-3"]
+    },
+    "brands": {
+      "type": "brand-ticker",
+      "settings": {},
+      "blocks": {
+        "b1": { "type": "brand", "settings": { "name": "VERSACE" } },
+        "b2": { "type": "brand", "settings": { "name": "ZARA" } },
+        "b3": { "type": "brand", "settings": { "name": "GUCCI" } },
+        "b4": { "type": "brand", "settings": { "name": "PRADA" } },
+        "b5": { "type": "brand", "settings": { "name": "Calvin Klein" } }
+      },
+      "block_order": ["b1", "b2", "b3", "b4", "b5"]
+    },
+    "new-arrivals": {
+      "type": "featured-products",
+      "settings": {
+        "title": "New Arrivals",
+        "products_to_show": 4,
+        "show_view_all": true
+      }
+    },
+    "divider": {
+      "type": "divider",
+      "settings": {}
+    },
+    "top-selling": {
+      "type": "featured-products",
+      "settings": {
+        "title": "Top Selling",
+        "products_to_show": 4,
+        "show_view_all": true
+      }
+    },
+    "browse-style": {
+      "type": "browse-by-style",
+      "settings": {},
+      "blocks": {
+        "s1": { "type": "style", "settings": { "label": "Casual" } },
+        "s2": { "type": "style", "settings": { "label": "Formal" } },
+        "s3": { "type": "style", "settings": { "label": "Party" } },
+        "s4": { "type": "style", "settings": { "label": "Gym" } }
+      },
+      "block_order": ["s1", "s2", "s3", "s4"]
+    },
+    "reviews": {
+      "type": "reviews",
+      "settings": {},
+      "blocks": {
+        "r1": { "type": "review", "settings": { "author": "Sarah M.", "rating": 5, "text": "I'm blown away by the quality and style of the clothes I received. From casual wear to elegant dresses, every piece has exceeded my expectations." } },
+        "r2": { "type": "review", "settings": { "author": "Alex K.", "rating": 5, "text": "Finding clothes that align with my personal style used to be a challenge until I discovered Shop.co. The range of options is truly remarkable, catering to a variety of tastes and occasions." } },
+        "r3": { "type": "review", "settings": { "author": "James L.", "rating": 5, "text": "As someone who's always on the lookout for unique fashion pieces, I'm thrilled. The selection is not only diverse but also on-point with the latest trends." } },
+        "r4": { "type": "review", "settings": { "author": "Olivia P.", "rating": 4, "text": "Absolutely love the quality of their clothes. The stitching and fabric are top-notch and it's clear the team cares deeply about craftsmanship." } }
+      },
+      "block_order": ["r1", "r2", "r3", "r4"]
+    }
+  },
+  "order": ["hero", "brands", "new-arrivals", "divider", "top-selling", "browse-style", "reviews"]
+}

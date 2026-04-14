@@ -1,0 +1,191 @@
+<section class="collection-page section--lg">
+  <div class="container">
+
+    <!-- Breadcrumb -->
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <a href="/">Home</a>
+      <span aria-hidden="true">›</span>
+      <span aria-current="page">{{ collection.title }}</span>
+    </nav>
+
+    <!-- Heading + result count -->
+    <div class="collection-header">
+      <h1>{{ collection.title }}</h1>
+      {% if collection.description != blank %}
+        <p style="color:var(--color-muted);font-size:15px;margin-top:8px;">{{ collection.description }}</p>
+      {% endif %}
+    </div>
+
+    <div class="collection-layout">
+
+      <!-- Sidebar Filters -->
+      <aside class="filters-sidebar" id="filters-sidebar" aria-label="Product filters">
+        <div class="flex-between" style="margin-bottom:8px;">
+          <h2 style="font-size:18px;">Filters</h2>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/>
+          </svg>
+        </div>
+
+        <form id="filter-form">
+
+          <!-- Price Range -->
+          <div class="filter-group">
+            <div class="filter-group__title">
+              Price
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+            </div>
+            <div class="price-range">
+              <input type="range" class="range-input" id="price-range" name="filter.v.price.gte" min="0" max="500" value="{{ current_tags contains 'price' | default: 500 }}" step="10">
+              <div class="price-range-labels">
+                <span>$0</span>
+                <span id="price-display">$500</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Colors -->
+          <div class="filter-group">
+            <div class="filter-group__title">
+              Colors
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+            </div>
+            <div class="color-swatches">
+              {%- assign colors = 'Green,Red,Yellow,Orange,Sky Blue,Blue,Purple,Pink,White,Black,Beige,Navy,Brown,Olive' | split: ',' -%}
+              {%- assign hex_colors = '#00B341,#E03131,#F5A623,#FF8800,#74C0FC,#1971C2,#9C36B5,#F783AC,#FFFFFF,#111111,#F5F0E8,#1B2A4A,#7C5C3E,#6A6A2E' | split: ',' -%}
+              {%- for color in colors -%}
+                <button
+                  type="button"
+                  class="color-swatch"
+                  style="background:{{ hex_colors[forloop.index0] }};{% if color == 'White' %}border:1px solid var(--color-border);{% endif %}"
+                  title="{{ color }}"
+                  aria-label="{{ color }}"
+                  data-filter-color="{{ color | downcase }}"
+                ></button>
+              {%- endfor -%}
+            </div>
+          </div>
+
+          <!-- Size -->
+          <div class="filter-group">
+            <div class="filter-group__title">
+              Size
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+            </div>
+            <div class="size-chips">
+              {%- for size in 'XX-Small,X-Small,Small,Medium,Large,X-Large,XX-Large,3X-Large,4X-Large' | split: ',' -%}
+                <button type="button" class="size-chip" data-filter-size="{{ size }}">{{ size }}</button>
+              {%- endfor -%}
+            </div>
+          </div>
+
+          <!-- Dress Style -->
+          <div class="filter-group">
+            <div class="filter-group__title">
+              Dress Style
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+            </div>
+            <div>
+              {%- for style in 'Casual,Formal,Party,Gym' | split: ',' -%}
+                <label class="filter-option">
+                  <input type="checkbox" name="filter.p.tag" value="{{ style | downcase }}"> {{ style }}
+                </label>
+              {%- endfor -%}
+            </div>
+          </div>
+
+          <button type="submit" class="btn btn--primary btn--full" style="margin-top:8px;">Apply Filters</button>
+
+        </form>
+      </aside>
+
+      <!-- Products area -->
+      <div class="collection-main">
+
+        <!-- Toolbar -->
+        <div class="collection-toolbar">
+          <div style="display:flex;align-items:center;gap:12px;">
+            <!-- Mobile filter toggle -->
+            <button class="btn btn--outline btn--sm" id="filter-toggle" style="display:none;" aria-label="Toggle filters">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>
+              Filters
+            </button>
+            <p>Showing {{ collection.products_count }} products</p>
+          </div>
+          <div style="display:flex;align-items:center;gap:12px;">
+            <label for="sort-select" style="font-size:14px;color:var(--color-muted);">Sort by:</label>
+            <select class="sort-select" id="sort-select" name="sort_by" onchange="window.location = '{{ collection.url }}?sort_by=' + this.value">
+              <option value="manual"{% if collection.sort_by == 'manual' %} selected{% endif %}>Featured</option>
+              <option value="price-ascending"{% if collection.sort_by == 'price-ascending' %} selected{% endif %}>Price: Low to High</option>
+              <option value="price-descending"{% if collection.sort_by == 'price-descending' %} selected{% endif %}>Price: High to Low</option>
+              <option value="title-ascending"{% if collection.sort_by == 'title-ascending' %} selected{% endif %}>A–Z</option>
+              <option value="title-descending"{% if collection.sort_by == 'title-descending' %} selected{% endif %}>Z–A</option>
+              <option value="created-descending"{% if collection.sort_by == 'created-descending' %} selected{% endif %}>Newest</option>
+              <option value="best-selling"{% if collection.sort_by == 'best-selling' %} selected{% endif %}>Best Selling</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Product Grid -->
+        {%- paginate collection.products by 12 -%}
+          {%- if collection.products.size > 0 -%}
+            <div class="products-grid" style="grid-template-columns:repeat(3,1fr);">
+              {%- for product in collection.products -%}
+                {% render 'product-card', product: product %}
+              {%- endfor -%}
+            </div>
+
+            <!-- Pagination -->
+            {%- if paginate.pages > 1 -%}
+              <nav class="pagination" aria-label="Pagination">
+                {%- if paginate.previous -%}
+                  <a href="{{ paginate.previous.url }}" class="page-btn" aria-label="Previous page">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>
+                  </a>
+                {%- endif -%}
+                {%- for part in paginate.parts -%}
+                  {%- if part.is_link -%}
+                    <a href="{{ part.url }}" class="page-btn">{{ part.title }}</a>
+                  {%- elsif part.title == paginate.current_page -%}
+                    <span class="page-btn active" aria-current="page">{{ part.title }}</span>
+                  {%- else -%}
+                    <span class="page-btn" style="border:none;cursor:default;">{{ part.title }}</span>
+                  {%- endif -%}
+                {%- endfor -%}
+                {%- if paginate.next -%}
+                  <a href="{{ paginate.next.url }}" class="page-btn" aria-label="Next page">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+                  </a>
+                {%- endif -%}
+              </nav>
+            {%- endif -%}
+          {%- else -%}
+            <div style="text-align:center;padding:80px 0;color:var(--color-muted);">
+              <p style="font-size:20px;margin-bottom:16px;">No products found</p>
+              <a href="/collections/all" class="btn btn--primary">Browse All Products</a>
+            </div>
+          {%- endif -%}
+        {%- endpaginate -%}
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  @media (max-width: 768px) {
+    #filter-toggle { display:flex !important; }
+    .filters-sidebar { display:none; position:fixed; top:0; left:0; width:85%; max-width:360px; height:100vh; z-index:200; background:#fff; box-shadow:4px 0 24px rgba(0,0,0,0.15); border-radius:0; overflow-y:auto; transform:translateX(-100%); transition:transform 0.3s ease; }
+    .filters-sidebar.open { display:block; transform:translateX(0); }
+    .collection-layout { grid-template-columns:1fr; }
+    .products-grid { grid-template-columns:repeat(2,1fr) !important; }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Collection Page",
+  "settings": [],
+  "presets": [{ "name": "Collection Page" }]
+}
+{% endschema %}

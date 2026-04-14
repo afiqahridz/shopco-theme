@@ -1,0 +1,206 @@
+<section class="cart-page section--lg" aria-label="Shopping cart">
+  <div class="container">
+    <h1>Your Cart</h1>
+
+    {%- if cart.item_count > 0 -%}
+      <div class="cart-layout">
+
+        <!-- Cart Items -->
+        <div>
+          <div class="cart-items" role="list">
+            {%- for item in cart.items -%}
+              <article class="cart-item" role="listitem">
+
+                <!-- Image -->
+                <a href="{{ item.url }}" class="cart-item__image" aria-label="{{ item.title }}">
+                  {%- if item.image -%}
+                    <img
+                      src="{{ item.image | image_url: width: 200 }}"
+                      alt="{{ item.image.alt | default: item.title | escape }}"
+                      width="100"
+                      height="120"
+                      loading="lazy"
+                    >
+                  {%- endif -%}
+                </a>
+
+                <!-- Info -->
+                <div>
+                  <h3 class="cart-item__name">
+                    <a href="{{ item.url }}">{{ item.product.title }}</a>
+                  </h3>
+                  {%- unless item.product.has_only_default_variant -%}
+                    <p class="cart-item__variant">
+                      {%- for option in item.options_with_values -%}
+                        {{ option.name }}: <strong>{{ option.value }}</strong>{% unless forloop.last %}, {% endunless %}
+                      {%- endfor -%}
+                    </p>
+                  {%- endunless -%}
+
+                  <!-- Mobile price -->
+                  <p class="cart-item__price" style="margin-top:8px;">{{ item.final_line_price | money }}</p>
+
+                  <!-- Quantity -->
+                  <div style="display:flex;align-items:center;gap:12px;margin-top:12px;">
+                    <div class="quantity-selector" data-qty-wrap aria-label="Quantity for {{ item.title }}">
+                      <button type="button" class="qty-btn" data-qty-minus aria-label="Decrease">−</button>
+                      <input
+                        class="qty-input"
+                        type="number"
+                        value="{{ item.quantity }}"
+                        min="0"
+                        data-qty-input
+                        data-line="{{ forloop.index }}"
+                        aria-label="Quantity"
+                      >
+                      <button type="button" class="qty-btn" data-qty-plus aria-label="Increase">+</button>
+                    </div>
+                    <button
+                      class="cart-remove-btn"
+                      data-cart-remove
+                      data-line="{{ forloop.index }}"
+                      aria-label="Remove {{ item.title }}"
+                      style="color:var(--color-muted);font-size:13px;text-decoration:underline;padding:4px;"
+                    >
+                      Remove
+                    </button>
+                  </div>
+                </div>
+
+                <!-- Price (desktop) -->
+                <div style="text-align:right;">
+                  <p class="cart-item__price">{{ item.final_line_price | money }}</p>
+                  {%- if item.original_line_price != item.final_line_price -%}
+                    <p style="font-size:13px;color:var(--color-muted);text-decoration:line-through;">{{ item.original_line_price | money }}</p>
+                  {%- endif -%}
+                </div>
+
+              </article>
+            {%- endfor -%}
+          </div>
+
+          <!-- Cart note -->
+          <div style="margin-top:24px;">
+            <label for="cart-note" style="font-size:14px;font-weight:600;display:block;margin-bottom:8px;">Order note (optional)</label>
+            <textarea
+              id="cart-note"
+              name="note"
+              rows="3"
+              style="width:100%;padding:12px 16px;border:1px solid var(--color-border);border-radius:var(--radius-md);font-family:inherit;font-size:14px;resize:vertical;outline:none;"
+              placeholder="Special instructions for your order..."
+            >{{ cart.note }}</textarea>
+          </div>
+        </div>
+
+        <!-- Order Summary -->
+        <aside class="cart-summary" aria-label="Order summary">
+          <h3>Order Summary</h3>
+
+          <!-- Line items summary -->
+          {%- for item in cart.items -%}
+            <div class="summary-row" style="font-size:13px;">
+              <span>{{ item.title }} × {{ item.quantity }}</span>
+              <span>{{ item.final_line_price | money }}</span>
+            </div>
+          {%- endfor -%}
+
+          <div style="border-top:1px solid var(--color-border);margin:16px 0;"></div>
+
+          <div class="summary-row">
+            <span>Subtotal</span>
+            <span>{{ cart.total_price | money }}</span>
+          </div>
+
+          {%- if cart.total_discounts > 0 -%}
+            <div class="summary-row" style="color:var(--color-badge-sale);">
+              <span>Discounts</span>
+              <span>-{{ cart.total_discounts | money }}</span>
+            </div>
+          {%- endif -%}
+
+          <div class="summary-row">
+            <span>Delivery</span>
+            <span style="color:#2E7D32;">Free</span>
+          </div>
+
+          <!-- Promo code -->
+          <div class="promo-input">
+            <input type="text" placeholder="Add promo code" aria-label="Promo code">
+            <button class="btn btn--outline btn--sm" type="button">Apply</button>
+          </div>
+
+          <div class="summary-row summary-row--total">
+            <span>Total</span>
+            <span>{{ cart.total_price | money }}</span>
+          </div>
+
+          <a href="/checkout" class="btn btn--primary btn--full" style="margin-top:16px;font-size:16px;padding:18px;">
+            Go to Checkout
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </a>
+
+          <a href="/collections/all" style="display:block;text-align:center;margin-top:16px;font-size:14px;color:var(--color-muted);text-decoration:underline;">
+            Continue Shopping
+          </a>
+        </aside>
+
+      </div>
+
+    {%- else -%}
+      <!-- Empty cart -->
+      <div style="text-align:center;padding:100px 0;">
+        <svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="var(--color-border)" stroke-width="1.5" style="margin:0 auto 24px;" aria-hidden="true">
+          <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/>
+          <line x1="3" y1="6" x2="21" y2="6"/>
+          <path d="M16 10a4 4 0 0 1-8 0"/>
+        </svg>
+        <h2 style="font-size:24px;margin-bottom:12px;">Your cart is empty</h2>
+        <p style="color:var(--color-muted);margin-bottom:32px;">Looks like you haven't added any items yet.</p>
+        <a href="/collections/all" class="btn btn--primary">Start Shopping</a>
+      </div>
+    {%- endif -%}
+
+  </div>
+</section>
+
+<script>
+// Live cart quantity update
+document.querySelectorAll('[data-qty-input][data-line]').forEach(input => {
+  let timer;
+  input.addEventListener('change', function() {
+    clearTimeout(timer);
+    const line = this.dataset.line;
+    const qty = parseInt(this.value);
+    timer = setTimeout(() => {
+      fetch('/cart/change.js', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ line: parseInt(line), quantity: qty >= 0 ? qty : 0 })
+      }).then(() => window.location.reload());
+    }, 600);
+  });
+});
+
+// Qty plus/minus for cart
+document.querySelectorAll('[data-qty-wrap]').forEach(wrap => {
+  const input = wrap.querySelector('[data-qty-input]');
+  wrap.querySelector('[data-qty-plus]')?.addEventListener('click', () => {
+    if (!input) return;
+    input.value = parseInt(input.value) + 1;
+    input.dispatchEvent(new Event('change'));
+  });
+  wrap.querySelector('[data-qty-minus]')?.addEventListener('click', () => {
+    if (!input || parseInt(input.value) <= 1) return;
+    input.value = parseInt(input.value) - 1;
+    input.dispatchEvent(new Event('change'));
+  });
+});
+</script>
+
+{% schema %}
+{
+  "name": "Cart Page",
+  "settings": [],
+  "presets": [{ "name": "Cart Page" }]
+}
+{% endschema %}
