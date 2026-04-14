@@ -45,7 +45,8 @@
         "cta_text": "Shop Now",
         "cta_url": "/collections/all",
         "secondary_cta_text": "",
-        "secondary_cta_url": ""
+        "secondary_cta_url": "",
+        "hero_image": "shopify://shop_images/Screenshot_2026-04-14_172935.png"
       }
     },
     "brands": {
@@ -116,40 +117,26 @@
     "browse-style": {
       "type": "browse-by-style",
       "blocks": {
-        "s1": {
+        "style_Ljkcmh": {
           "type": "style",
           "settings": {
-            "label": "Casual",
+            "image": "shopify://shop_images/Screenshot_2026-04-14_172935.png",
+            "label": "Tops",
             "url": ""
           }
         },
         "s2": {
           "type": "style",
           "settings": {
-            "label": "Formal",
-            "url": ""
-          }
-        },
-        "s3": {
-          "type": "style",
-          "settings": {
-            "label": "Party",
-            "url": ""
-          }
-        },
-        "s4": {
-          "type": "style",
-          "settings": {
-            "label": "Gym",
+            "image": "shopify://shop_images/Screenshot_2026-04-14_174133.png",
+            "label": "bottom",
             "url": ""
           }
         }
       },
       "block_order": [
-        "s1",
-        "s2",
-        "s3",
-        "s4"
+        "style_Ljkcmh",
+        "s2"
       ],
       "settings": {}
     },
