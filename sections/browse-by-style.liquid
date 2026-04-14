@@ -16,7 +16,7 @@
                 src="{{ block.settings.image | image_url: width: 800 }}"
                 alt="{{ block.settings.label }}"
                 width="800"
-                height="{{ first | ternary: 600, 300 }}"
+                height="{% if first %}600{% else %}300{% endif %}"
                 loading="lazy"
               >
             {% else %}
