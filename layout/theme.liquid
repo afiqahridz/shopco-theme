@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="{{ request.locale.iso_code }}">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#000000">
+
+  <title>
+    {{ page_title }}{% if current_tags %} &ndash; tagged "{{ current_tags | join: ', ' }}"{% endif %}
+    {% if current_page != 1 %} &ndash; Page {{ current_page }}{% endif %}
+    {% unless page_title contains shop.name %} &ndash; {{ shop.name }}{% endunless %}
+  </title>
+
+  {% if page_description %}
+    <meta name="description" content="{{ page_description | escape }}">
+  {% endif %}
+
+  <link rel="canonical" href="{{ canonical_url }}">
+
+  {% if settings.favicon %}
+    <link rel="icon" type="image/png" href="{{ settings.favicon | image_url: width: 32 }}">
+  {% endif %}
+
+  {{ content_for_header }}
+
+  <!-- Google Fonts fallback -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  {{ 'theme.css' | asset_url | stylesheet_tag }}
+
+  <style>
+    :root {
+      --color-bg: {{ settings.color_background }};
+      --color-text: {{ settings.color_text }};
+      --color-btn-bg: {{ settings.color_button }};
+      --color-btn-text: {{ settings.color_button_text }};
+      --color-star: {{ settings.color_star }};
+    }
+  </style>
+</head>
+
+<body class="template-{{ template.name }}">
+
+  <!-- Overlay for mobile menu -->
+  <div class="overlay" id="menu-overlay"></div>
+
+  <!-- Mobile Menu -->
+  <nav class="mobile-menu" id="mobile-menu" aria-label="Mobile navigation">
+    <div class="mobile-menu__header">
+      <a href="/" class="site-header__logo">{{ shop.name }}</a>
+      <button id="mobile-menu-close" aria-label="Close menu">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
+      </button>
+    </div>
+    <div class="mobile-menu__nav">
+      {% for link in linklists.main-menu.links %}
+        <a href="{{ link.url }}">{{ link.title }}</a>
+      {% endfor %}
+      <a href="/cart">Cart ({{ cart.item_count }})</a>
+      <a href="/account">Account</a>
+    </div>
+  </nav>
+
+  {% section 'announcement-bar' %}
+  {% section 'header' %}
+
+  <main id="main-content">
+    {{ content_for_layout }}
+  </main>
+
+  {% section 'newsletter' %}
+  {% section 'footer' %}
+
+  <!-- Toast notification -->
+  <div class="toast" id="toast-notification" role="alert" aria-live="polite"></div>
+
+  {{ 'theme.js' | asset_url | script_tag }}
+
+</body>
+</html>

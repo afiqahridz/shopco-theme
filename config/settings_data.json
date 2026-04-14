@@ -1,0 +1,12 @@
+{
+  "current": {
+    "color_background": "#F2F0F1",
+    "color_text": "#000000",
+    "color_button": "#000000",
+    "color_button_text": "#FFFFFF",
+    "color_star": "#FFC633",
+    "font_heading": "inter_n7",
+    "font_body": "inter_n4",
+    "cart_type": "page"
+  }
+}
