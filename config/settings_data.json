@@ -1,3 +1,12 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "current": {
     "color_background": "#F2F0F1",
@@ -7,6 +16,44 @@
     "color_star": "#FFC633",
     "font_heading": "inter_n7",
     "font_body": "inter_n4",
-    "cart_type": "page"
+    "cart_type": "page",
+    "sections": {
+      "announcement-bar": {
+        "type": "announcement-bar",
+        "settings": {
+          "show_bar": true,
+          "text": "Sign up and get 20% off to your first order.",
+          "link_text": "Sign Up Now",
+          "link_url": ""
+        }
+      },
+      "header": {
+        "type": "header",
+        "settings": {
+          "logo_width": 120,
+          "show_account": true
+        }
+      },
+      "newsletter": {
+        "type": "newsletter",
+        "settings": {
+          "heading": "Stay Upto Date About Our Latest Offers",
+          "subtext": "",
+          "placeholder": "Enter your email address",
+          "button_text": "Subscribe to Newsletter"
+        }
+      },
+      "footer": {
+        "type": "footer",
+        "settings": {
+          "brand_desc": "We have clothes that suits your style and which you're proud to wear. From women to men.",
+          "social_twitter": "",
+          "social_facebook": "",
+          "social_instagram": "",
+          "social_github": "https://github.com/afiqahridz/shopco-theme"
+        }
+      }
+    },
+    "content_for_index": []
   }
 }
