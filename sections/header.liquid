@@ -1,0 +1,172 @@
+{% comment %}
+  Header section
+  - sticky nav with search + cart icon
+  - TODO: maybe add mega menu later if needed
+{% endcomment %}
+
+<header class="site-header" role="banner">
+  <div class="site-header__inner">
+
+    {% comment %} hamburger - only shows on mobile via css {% endcomment %}
+    <button
+      class="icon-btn mobile-menu-btn"
+      id="mobile-menu-open"
+      aria-label="Open menu"
+      aria-expanded="false"
+      aria-controls="mobile-menu"
+    >
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <line x1="3" y1="6" x2="21" y2="6"/>
+        <line x1="3" y1="12" x2="21" y2="12"/>
+        <line x1="3" y1="18" x2="21" y2="18"/>
+      </svg>
+    </button>
+
+    {% comment %} Logo {% endcomment %}
+    <a href="/" class="site-header__logo" aria-label="{{ shop.name }} - Home">
+      {%- if section.settings.logo -%}
+        <img
+          src="{{ section.settings.logo | image_url: width: 160 }}"
+          alt="{{ shop.name }}"
+          width="{{ section.settings.logo_width }}"
+          height="auto"
+          loading="eager"
+        >
+      {%- else -%}
+        {{ shop.name }}
+      {%- endif -%}
+    </a>
+
+    {% comment %} Desktop nav - hidden on mobile {% endcomment %}
+    <nav class="site-nav" aria-label="Main navigation">
+      {%- for link in linklists.main-menu.links -%}
+        {%- if link.links.size > 0 -%}
+          <div class="site-nav__dropdown-wrap" style="position:relative;">
+            <a
+              href="{{ link.url }}"
+              class="site-nav__link site-nav__link--dropdown"
+              aria-haspopup="true"
+            >
+              {{ link.title }}
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+                <path d="M6 9l6 6 6-6"/>
+              </svg>
+            </a>
+            <ul
+              class="nav-dropdown"
+              style="display:none;position:absolute;top:calc(100% + 8px);left:0;min-width:180px;background:#fff;border:1px solid var(--border);border-radius:10px;padding:6px 0;box-shadow:0 8px 24px rgba(0,0,0,0.08);z-index:50;"
+            >
+              {%- for sublink in link.links -%}
+                <li>
+                  <a
+                    href="{{ sublink.url }}"
+                    style="display:block;padding:9px 16px;font-size:14px;transition:background 0.15s;"
+                    onmouseover="this.style.background='#f5f5f5'"
+                    onmouseout="this.style.background=''"
+                  >{{ sublink.title }}</a>
+                </li>
+              {%- endfor -%}
+            </ul>
+          </div>
+
+        {%- else -%}
+          <a
+            href="{{ link.url }}"
+            class="site-nav__link"
+            {%- if link.active %} aria-current="page"{% endif -%}
+          >
+            {{ link.title }}
+          </a>
+        {%- endif -%}
+      {%- endfor -%}
+    </nav>
+
+    {% comment %} Search bar {% endcomment %}
+    <div class="site-header__search" role="search">
+      <form action="/search" method="get" class="search-input">
+        <input type="hidden" name="type" value="product">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+          <circle cx="11" cy="11" r="8"/>
+          <path d="M21 21l-4.35-4.35"/>
+        </svg>
+        <input
+          type="search"
+          name="q"
+          placeholder="Search for products..."
+          value="{{ search.terms | escape }}"
+          aria-label="Search products"
+        >
+        <button type="submit" class="visually-hidden">Search</button>
+      </form>
+    </div>
+
+    {% comment %} Icons: account + cart {% endcomment %}
+    <div class="site-header__icons">
+
+      {%- if section.settings.show_account -%}
+        <a
+          href="{%- if customer -%}/account{%- else -%}/account/login{%- endif -%}"
+          class="icon-btn"
+          aria-label="{%- if customer -%}My Account{%- else -%}Sign In{%- endif -%}"
+        >
+          <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+            <circle cx="12" cy="7" r="4"/>
+          </svg>
+        </a>
+      {%- endif -%}
+
+      <a
+        href="/cart"
+        class="icon-btn"
+        aria-label="Cart, {{ cart.item_count }} {{ cart.item_count | pluralize: 'item', 'items' }}"
+      >
+        <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+          <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/>
+          <line x1="3" y1="6" x2="21" y2="6"/>
+          <path d="M16 10a4 4 0 0 1-8 0"/>
+        </svg>
+        <span
+          class="cart-count"
+          aria-hidden="true"
+          {%- unless cart.item_count > 0 %} style="display:none"{% endunless -%}
+        >{{ cart.item_count }}</span>
+      </a>
+
+    </div>
+  </div>
+</header>
+
+<style>
+  /* hover to show dropdown */
+  .site-nav__dropdown-wrap:hover .nav-dropdown { display:block !important; }
+</style>
+
+{% schema %}
+{
+  "name": "Header",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "logo",
+      "label": "Logo image"
+    },
+    {
+      "type": "range",
+      "id": "logo_width",
+      "min": 80,
+      "max": 240,
+      "step": 8,
+      "unit": "px",
+      "label": "Logo width",
+      "default": 120
+    },
+    {
+      "type": "checkbox",
+      "id": "show_account",
+      "label": "Show account icon",
+      "default": true
+    }
+  ]
+}
+{% endschema %}

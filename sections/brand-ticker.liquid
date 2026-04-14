@@ -1,0 +1,55 @@
+<div class="brand-ticker" aria-label="Featured brands">
+  <div class="brand-ticker__track" id="brand-track">
+    {% for block in section.blocks %}
+      {% if block.type == 'brand' %}
+        <div class="brand-ticker__item" {{ block.shopify_attributes }}>
+          {% if block.settings.logo %}
+            <img src="{{ block.settings.logo | image_url: height: 40 }}" alt="{{ block.settings.name }}" height="28" loading="lazy">
+          {% else %}
+            <span style="font-family:var(--font-main);font-size:22px;font-weight:700;color:#fff;letter-spacing:-0.5px;opacity:0.8;white-space:nowrap;">{{ block.settings.name }}</span>
+          {% endif %}
+        </div>
+      {% endif %}
+    {% endfor %}
+    <!-- Duplicate for seamless loop -->
+    {% for block in section.blocks %}
+      {% if block.type == 'brand' %}
+        <div class="brand-ticker__item" aria-hidden="true">
+          {% if block.settings.logo %}
+            <img src="{{ block.settings.logo | image_url: height: 40 }}" alt="" height="28" loading="lazy">
+          {% else %}
+            <span style="font-family:var(--font-main);font-size:22px;font-weight:700;color:#fff;letter-spacing:-0.5px;opacity:0.8;white-space:nowrap;">{{ block.settings.name }}</span>
+          {% endif %}
+        </div>
+      {% endif %}
+    {% endfor %}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Brand Ticker",
+  "blocks": [
+    {
+      "type": "brand",
+      "name": "Brand",
+      "settings": [
+        { "type": "text", "id": "name", "label": "Brand name", "default": "VERSACE" },
+        { "type": "image_picker", "id": "logo", "label": "Brand logo (white/light SVG or PNG)" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Brand Ticker",
+      "blocks": [
+        { "type": "brand", "settings": { "name": "VERSACE" } },
+        { "type": "brand", "settings": { "name": "ZARA" } },
+        { "type": "brand", "settings": { "name": "GUCCI" } },
+        { "type": "brand", "settings": { "name": "PRADA" } },
+        { "type": "brand", "settings": { "name": "Calvin Klein" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

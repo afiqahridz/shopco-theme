@@ -1,0 +1,24 @@
+{% if section.settings.show_bar %}
+<div class="announcement-bar" id="announcement-bar" role="region" aria-label="Announcement">
+  <p>
+    {{ section.settings.text }}
+    {% if section.settings.link_text != blank and section.settings.link_url != blank %}
+      <a href="{{ section.settings.link_url }}">{{ section.settings.link_text }}</a>
+    {% endif %}
+  </p>
+  <button class="announcement-bar__close" id="announcement-close" aria-label="Dismiss announcement">✕</button>
+</div>
+{% endif %}
+
+{% schema %}
+{
+  "name": "Announcement Bar",
+  "settings": [
+    { "type": "checkbox", "id": "show_bar", "label": "Show announcement bar", "default": true },
+    { "type": "text", "id": "text", "label": "Announcement text", "default": "Sign up and get 20% off to your first order." },
+    { "type": "text", "id": "link_text", "label": "Link text", "default": "Sign Up Now" },
+    { "type": "url", "id": "link_url", "label": "Link URL" }
+  ],
+  "presets": [{ "name": "Announcement Bar" }]
+}
+{% endschema %}
