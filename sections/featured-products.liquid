@@ -1,0 +1,39 @@
+<section class="products-section section" aria-label="{{ section.settings.title }}">
+  <div class="container">
+    <h2 class="section-title" data-animate>{{ section.settings.title }}</h2>
+
+    <div class="products-grid">
+      {%- assign collection = collections[section.settings.collection] -%}
+      {%- if collection != blank -%}
+        {%- for product in collection.products limit: section.settings.products_to_show -%}
+          {% render 'product-card', product: product %}
+        {%- endfor -%}
+      {%- else -%}
+        {%- for i in (1..4) -%}
+          {% render 'product-card-placeholder', index: i %}
+        {%- endfor -%}
+      {%- endif -%}
+    </div>
+
+    {% if section.settings.show_view_all %}
+      <div class="view-all-wrap" data-animate>
+        <a href="{{ section.settings.collection | prepend: '/collections/' }}" class="btn btn--outline">
+          View All
+        </a>
+      </div>
+    {% endif %}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Featured Products",
+  "settings": [
+    { "type": "text", "id": "title", "label": "Section heading", "default": "New Arrivals" },
+    { "type": "collection", "id": "collection", "label": "Collection" },
+    { "type": "range", "id": "products_to_show", "min": 2, "max": 8, "step": 1, "label": "Products to show", "default": 4 },
+    { "type": "checkbox", "id": "show_view_all", "label": "Show 'View All' button", "default": true }
+  ],
+  "presets": [{ "name": "Featured Products" }]
+}
+{% endschema %}
